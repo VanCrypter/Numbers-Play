@@ -34,7 +34,7 @@ namespace Code
             if (block != null)
                 _pool.Enqueue(block);
         }
-
+  
         private void GeneratePool()
         {
             if (_capacity <= 0)

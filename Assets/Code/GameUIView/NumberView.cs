@@ -5,7 +5,7 @@ namespace Code
 {
     public class NumberView : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _numberText;
+        [SerializeField] private TextMeshPro _numberText;
 
         public void DisplayNumber(int number)
         {

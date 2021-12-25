@@ -1,21 +1,27 @@
-using System;
-using System.Collections;
+﻿using System.Collections.Generic;
 using Code.Blocks;
+using UnityEditor.Purchasing;
 using UnityEngine;
 
 namespace Code
 {
-    public class Game : MonoBehaviour
+    public class Game :MonoBehaviour
     {
-        private PoolBlocks _pool;
-        private void Start()
+        [SerializeField]private PlayingArea  _playingArea;
+        [SerializeField] private NumberTimer _timer;
+        private List<Block> _selectedBlocks;
+        public void StartGame()
         {
-        
+            _playingArea.ConstructPlayingArea();
+            _timer.StartTimer();
         }
 
-        private void Initialization()
+        public void AddToSelected(Block block)
         {
-            _pool = new PoolBlocks();
+            if (block !=null)
+                _selectedBlocks.Add(block);
+            
         }
+
     }
 }

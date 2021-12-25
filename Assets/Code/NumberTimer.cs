@@ -36,7 +36,6 @@ namespace Code
 
         private IEnumerator Timer()
         {
-            //Progress = _duration;
             Progress = 1f;
             var timer = _duration;
             while (timer > 0)
@@ -44,7 +43,6 @@ namespace Code
                 timer -= Time.deltaTime;
                 Progress -= Time.deltaTime / _duration;
                 _radialBarView.UpdateBar(Progress);
-                //yield return new WaitForSeconds(0.025f);
                 yield return null;
             }
 

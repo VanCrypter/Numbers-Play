@@ -7,7 +7,10 @@ namespace Code.Blocks
         private BlockView _blockView;
 
         private BlockData _data;
-            
+
+        public float Size;
+    
+
         public void Select()
         {
        

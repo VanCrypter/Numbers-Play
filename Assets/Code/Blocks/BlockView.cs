@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Code.Blocks
 {
     public class BlockView :MonoBehaviour
     {
-        [SerializeField] private Image _colorSprite;
-        [SerializeField] private Text _textNumber;
+        [SerializeField] private SpriteRenderer _colorSprite;
+        [SerializeField] private TextMeshPro _textNumber;
 
         public void SetNumber(int number)
         {

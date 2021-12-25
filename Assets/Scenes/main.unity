@@ -205,7 +205,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 288118130}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 456441333}
+        m_TargetAssemblyTypeName: Code.Game, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 857935806}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &288118130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +494,8 @@ GameObject:
   m_Component:
   - component: {fileID: 456441330}
   - component: {fileID: 456441331}
+  - component: {fileID: 456441333}
+  - component: {fileID: 456441332}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -504,10 +530,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blockPrefab:
-    m_AssetGUID: 68df4fc0c30f5334e9cb7f3052ee8ae6
+    m_AssetGUID: fdc033f8ea7350c45a52c06c8647cbda
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+--- !u!114 &456441332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456441329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c0d3bdf9a8461fb39c9215363b4121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _radialBarView: {fileID: 1758958378}
+  _duration: 10
+--- !u!114 &456441333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456441329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 571559c5543749e7940f7462554b6fd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playingArea: {fileID: 2029756956}
+  _timer: {fileID: 456441332}
 --- !u!1 &467441577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2519,7 +2573,6 @@ GameObject:
   - component: {fileID: 1758958376}
   - component: {fileID: 1758958375}
   - component: {fileID: 1758958378}
-  - component: {fileID: 1758958377}
   m_Layer: 5
   m_Name: target
   m_TagString: Untagged
@@ -2585,20 +2638,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758958373}
   m_CullTransparentMesh: 0
---- !u!114 &1758958377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1758958373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8c0d3bdf9a8461fb39c9215363b4121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _radialBarView: {fileID: 1758958378}
-  _duration: 15
 --- !u!114 &1758958378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2843,6 +2882,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2029756955}
+  - component: {fileID: 2029756956}
   m_Layer: 0
   m_Name: PlayGround
   m_TagString: Untagged
@@ -2865,6 +2905,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2029756956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029756954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74d976a51f54ced87096fa5d73635cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridSize: {x: 4, y: 7}
+  _startPosition: {x: -2.5, y: -4}
+  _prefabBlock: {fileID: 8639686983758332587, guid: fdc033f8ea7350c45a52c06c8647cbda, type: 3}
+  _pool: {fileID: 456441331}
+  _parent: {fileID: 2029756955}
 --- !u!1 &2113103821
 GameObject:
   m_ObjectHideFlags: 0
