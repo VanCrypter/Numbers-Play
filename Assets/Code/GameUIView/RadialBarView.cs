@@ -1,11 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Code
 {
     public class RadialBarView : MonoBehaviour
     {
-        [SerializeField] private Image _radialBar;
+        private Image _radialBar;
+
+        private void Awake()
+        {
+            _radialBar = GetComponent<Image>();
+        }
 
         public void UpdateBar(float progress)
         {

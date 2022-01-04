@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Code
 {
-    public class NumberTimer :MonoBehaviour
+    public class NumberTimer : MonoBehaviour
     {
         [SerializeField] private RadialBarView _radialBarView;
-        [SerializeField]private float _duration = 10f;
+        [SerializeField] private float _duration = 10f;
         private Coroutine _timer;
 
         public Action TimerEnded;
@@ -25,6 +25,7 @@ namespace Code
 
         public void StartTimer()
         {
+            StopAllCoroutines();
             _timer = StartCoroutine(Timer());
         }
 
@@ -47,7 +48,6 @@ namespace Code
             }
 
             TimerEnded?.Invoke();
-            ResetTimer();
         }
 
         private void ResetTimer()

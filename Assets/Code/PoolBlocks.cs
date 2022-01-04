@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Code.Blocks;
 using UnityEngine;
-using  UnityEngine.AddressableAssets;
-using  UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Code
 {
     public class PoolBlocks : MonoBehaviour
     {
         [SerializeField] private AssetReference _blockPrefab;
-
+        [SerializeField] private Game _game;
         private Queue<Block> _pool;
         private int _capacity;
 
@@ -32,9 +31,12 @@ namespace Code
         public void ReturnBlock(Block block)
         {
             if (block != null)
+            {
+                block.gameObject.SetActive(false);
                 _pool.Enqueue(block);
+            }
         }
-  
+
         private void GeneratePool()
         {
             if (_capacity <= 0)
@@ -42,10 +44,7 @@ namespace Code
 
             _pool = new Queue<Block>(_capacity);
 
-            for (int i = 0; i < _capacity; i++)
-            {
-                Addressables.LoadAssetAsync<GameObject>(_blockPrefab).Completed += LoadingComplete;
-            }
+            Addressables.LoadAssetAsync<GameObject>(_blockPrefab).Completed += LoadingComplete;
         }
 
         private void LoadingComplete(AsyncOperationHandle<GameObject> obj)
@@ -53,9 +52,14 @@ namespace Code
             if (obj.Status == AsyncOperationStatus.Succeeded)
             {
                 var loadedObj = obj.Result;
-               var instantiatedObj = Instantiate(loadedObj,this.transform);
-                _pool.Enqueue(instantiatedObj.GetComponent<Block>());
-                instantiatedObj.SetActive(false);
+                for (int i = 0; i < _capacity; i++)
+                {
+                    var instantiatedObj = Instantiate(loadedObj);
+                    var block = instantiatedObj.GetComponent<Block>();
+                    block.Initialize(_game.GetBlocksService);
+                    _pool.Enqueue(block);
+                    instantiatedObj.SetActive(false);
+                }
             }
         }
     }
