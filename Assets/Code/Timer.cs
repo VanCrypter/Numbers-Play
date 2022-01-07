@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace Code
 {
-    public class NumberTimer : MonoBehaviour
+    public class Timer : MonoBehaviour
     {
         [SerializeField] private RadialBarView _radialBarView;
         [SerializeField] private float _duration = 10f;
         private Coroutine _timer;
+        private bool isPaused;
+        public Action TimerExpired;
 
-        public Action TimerEnded;
 
         /// <summary>
         /// Progress timer 0-1
@@ -25,36 +26,41 @@ namespace Code
 
         public void StartTimer()
         {
-            StopAllCoroutines();
-            _timer = StartCoroutine(Timer());
+            StopTimer();
+            _timer = StartCoroutine(TimerCorutine());
         }
 
+        public void Pause()
+        {
+            isPaused = true;
+        }
+        public void Resume()
+        {
+            isPaused = false;
+        }
         public void StopTimer()
         {
             if (_timer != null)
                 StopCoroutine(_timer);
         }
 
-        private IEnumerator Timer()
+        private IEnumerator TimerCorutine()
         {
             Progress = 1f;
             var timer = _duration;
             while (timer > 0)
             {
-                timer -= Time.deltaTime;
-                Progress -= Time.deltaTime / _duration;
-                _radialBarView.UpdateBar(Progress);
+                if (isPaused == false)
+                {
+                    timer -= Time.deltaTime;
+                    Progress -= Time.deltaTime / _duration;
+                    _radialBarView.UpdateBar(Progress);
+                }
                 yield return null;
             }
 
-            TimerEnded?.Invoke();
+            TimerExpired?.Invoke();
         }
 
-        private void ResetTimer()
-        {
-            Progress = 1f;
-            _radialBarView.UpdateBar(Progress);
-            StartTimer();
-        }
     }
 }

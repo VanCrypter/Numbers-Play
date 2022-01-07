@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace Code
 {
-    public class NumberView : MonoBehaviour
+    public class NumberView : View
     {
-        [SerializeField] private TextMeshPro _numberText;
 
-        public void DisplayNumber(int number)
+        public override void Display(int number)
         {
-            _numberText.text = number.ToString();
+            _text.text = number.ToString();
         }
+
+
     }
 }

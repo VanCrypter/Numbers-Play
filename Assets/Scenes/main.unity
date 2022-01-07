@@ -497,6 +497,7 @@ GameObject:
   - component: {fileID: 456441333}
   - component: {fileID: 456441332}
   - component: {fileID: 456441334}
+  - component: {fileID: 456441335}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -535,7 +536,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  _game: {fileID: 456441333}
+  _capacity: 100
 --- !u!114 &456441332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,14 +563,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 571559c5543749e7940f7462554b6fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainMenu: {fileID: 857935806}
-  _timersGameObject: {fileID: 562336893}
-  _playingArea: {fileID: 2029756956}
+  _gameUI: {fileID: 456441335}
+  _playingField: {fileID: 2029756956}
   _localTimer: {fileID: 456441332}
-  _globalTimer: {fileID: 456441334}
+  _mainTimer: {fileID: 456441334}
   _targetView: {fileID: 967884632}
-  _pool: {fileID: 456441331}
-  _minTargetNumber: 6
+  _scoreView: {fileID: 939710892}
+  _minTargetNumber: 3
   _maxTargetNumber: 12
 --- !u!114 &456441334
 MonoBehaviour:
@@ -584,7 +584,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _radialBarView: {fileID: 1238264861}
-  _duration: 30
+  _duration: 24
+--- !u!114 &456441335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456441329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fcdf3bd83d30d740ac6ce0cf5534f49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mainMenu: {fileID: 857935806}
+  _timersViewObject: {fileID: 562336893}
+  _scoreViewObject: {fileID: 939710888}
 --- !u!1 &467441577
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,13 +1081,14 @@ GameObject:
   - component: {fileID: 939710889}
   - component: {fileID: 939710891}
   - component: {fileID: 939710890}
+  - component: {fileID: 939710892}
   m_Layer: 5
-  m_Name: sum
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &939710889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1087,10 +1103,10 @@ RectTransform:
   m_Father: {fileID: 1897541438}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -397}
-  m_SizeDelta: {x: 300, y: 100}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -131, y: -87}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &939710890
 MonoBehaviour:
@@ -1112,17 +1128,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 12
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4288145895
+  m_fontColor: {r: 0.90679777, g: 0.9150943, b: 0.5913581, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1139,15 +1155,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_fontStyle: 1
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1189,6 +1205,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939710888}
   m_CullTransparentMesh: 0
+--- !u!114 &939710892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939710888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255019fc88629cb45827ef3610839420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &967884630
 GameObject:
   m_ObjectHideFlags: 0
@@ -2003,7 +2031,7 @@ GameObject:
   - component: {fileID: 1238264859}
   - component: {fileID: 1238264861}
   m_Layer: 5
-  m_Name: GlobalTimer
+  m_Name: mainTimerView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3058,7 +3086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74d976a51f54ced87096fa5d73635cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: {x: 4, y: 7}
+  _gridSize: {x: 3, y: 4}
   _startPosition: {x: -1.5, y: -5}
   _pool: {fileID: 456441331}
   _parent: {fileID: 2029756955}

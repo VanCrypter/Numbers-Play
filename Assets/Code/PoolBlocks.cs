@@ -3,15 +3,15 @@ using Code.Blocks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Random = System.Random;
 
 namespace Code
 {
     public class PoolBlocks : MonoBehaviour
     {
         [SerializeField] private AssetReference _blockPrefab;
-        [SerializeField] private Game _game;
-        private Queue<Block> _pool;
-        private int _capacity;
+        [SerializeField] private int _capacity;
+        [SerializeField] private Queue<Block> _pool;
 
         private void Start()
         {
@@ -25,6 +25,7 @@ namespace Code
         {
             if (_pool.Count <= 0)
                 GeneratePool();
+
             return _pool.Dequeue();
         }
 
@@ -56,7 +57,7 @@ namespace Code
                 {
                     var instantiatedObj = Instantiate(loadedObj);
                     var block = instantiatedObj.GetComponent<Block>();
-                    block.Initialize(_game.GetBlocksService);
+                    block.name = $"block{i}";
                     _pool.Enqueue(block);
                     instantiatedObj.SetActive(false);
                 }

@@ -1,10 +1,9 @@
-﻿using TMPro;
-using UnityEngine;
-
-namespace Code.GameUIView
+﻿using UnityEngine;
+using TMPro;
+namespace Code
 {
-    public class TargetView : View
-    {          
+    public class ScoreView : View
+    {
         public override void Display(int number)
         {
             _text.text = number.ToString();
