@@ -17,16 +17,15 @@ namespace Code
         [SerializeField] private View _scoreView;
         [SerializeField] [Range(1, 10)] private int _minTargetNumber;
         [SerializeField, Range(5, 50)] private int _maxTargetNumber;
-        private int _targetNumber = 0;
-        private int _score;
-
-        public int TargetNumber 
+        [SerializeField] private int _targetNumber = 0;
+        [SerializeField] private int _score;
+        public int TargetNumber
         {
             get { return _targetNumber; }
-            private set 
+            private set
             {
                 _targetNumber = value;
-                _targetView.Display(_targetNumber);            
+                _targetView.Display(_targetNumber);
             }
         }
         public int Score
@@ -35,7 +34,7 @@ namespace Code
             private set
             {
                 _score = value;
-                _scoreView.Display(_score);            
+                _scoreView.Display(_score);
             }
         }
         private void Awake()
@@ -51,27 +50,22 @@ namespace Code
             _mainTimer.StartTimer();
             Score = 0;
             NextNumber();
-            _playingField.ShowLog(TargetNumber);
 
         }
 
-        private void MainTimerWasExpired()
-        {
-            GameOver();
-        }
+
 
         private void GameOver()
         {
             _localTimer.StopTimer();
             _mainTimer.StopTimer();
-            _playingField.Hide();
+            _playingField.ResetPlayingField();
             _gameUI.Hide();
-
         }
 
         private void OnSelectedChanged()
         {
-            CalculateSelectedBlocks();          
+            CalculateSelectedBlocks();
         }
 
         private void CalculateSelectedBlocks()
@@ -79,20 +73,21 @@ namespace Code
             if (_playingField.SumSelectedBlocks == _targetNumber)
             {
                 Score++;
-                _playingField.RemoveSelected();
-                NextNumber();              
+                _playingField.DeleteSelectedBlocks();
+                NextNumber();
             }
         }
 
         private void NextNumber()
         {
-            _playingField.SumSelectedBlocks = 0;
-            TargetNumber = UnityEngine.Random.Range(_minTargetNumber, _maxTargetNumber);          
-            _playingField.DeselectAllBlocks();
+            _playingField.ResetSelectedBlocks();
+            TargetNumber = UnityEngine.Random.Range(_minTargetNumber, _maxTargetNumber);
             _localTimer.StartTimer();
         }
         private void TimerWasExpired() =>
             NextNumber();
+        private void MainTimerWasExpired() =>
+            GameOver();
 
         private void OnDestroy()
         {

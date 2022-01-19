@@ -536,7 +536,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  _capacity: 100
+  _capacity: 50
 --- !u!114 &456441332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,8 +569,10 @@ MonoBehaviour:
   _mainTimer: {fileID: 456441334}
   _targetView: {fileID: 967884632}
   _scoreView: {fileID: 939710892}
-  _minTargetNumber: 3
+  _minTargetNumber: 4
   _maxTargetNumber: 12
+  _targetNumber: 0
+  _score: 0
 --- !u!114 &456441334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,7 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _radialBarView: {fileID: 1238264861}
-  _duration: 24
+  _duration: 30
 --- !u!114 &456441335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3086,10 +3088,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74d976a51f54ced87096fa5d73635cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: {x: 3, y: 4}
+  _gridSize: {x: 4, y: 5}
   _startPosition: {x: -1.5, y: -5}
   _pool: {fileID: 456441331}
   _parent: {fileID: 2029756955}
+  _selectedBlocks: []
+  _inGameBlocks: []
 --- !u!1 &2113103821
 GameObject:
   m_ObjectHideFlags: 0

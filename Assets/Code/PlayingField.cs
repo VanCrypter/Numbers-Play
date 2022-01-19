@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 using Code.Blocks;
 using UnityEngine;
 
@@ -14,10 +15,21 @@ namespace Code
         [SerializeField] private Transform _parent;
         private float _sizeBlock;
         private Vector2 _bufferPosition;
-        private Block[,] _field;
 
-        public Action SelectedChanged;
-        public int SumSelectedBlocks { get; set; }
+        private Block[,] _field;
+        private Dictionary<Vector2Int, Vector3> _positions = new Dictionary<Vector2Int, Vector3>();
+        [SerializeField] private List<Block> _selectedBlocks = new List<Block>();
+        [SerializeField] private List<Block> _inGameBlocks = new List<Block>();
+
+        public event Action SelectedChanged;
+        private int sumSelectedBlocks;
+
+        public int SumSelectedBlocks
+        {
+            get => CalculateSelectedBlocks();
+
+        }
+
 
         private void Awake()
         {
@@ -27,148 +39,112 @@ namespace Code
         public void CreatePlayingField()
         {
             GeneratePlayingField();
-            Debug.Log($"original matrix= \n" +
-                          $"___________\n" +
-                          $"|{_field[0, 3].Number} | {_field[1, 3].Number} | {_field[2, 3].Number}|\n" +
-                          $"___________\n"+
-                          $"|{_field[0, 2].Number} | {_field[1, 2].Number} | {_field[2, 2].Number}|\n" +
-                          $"___________\n" +
-                          $"|{_field[0, 1].Number} | {_field[1, 1].Number} | {_field[2, 1].Number}|\n" +
-                          $"___________\n" +
-                          $"|{_field[0, 0].Number} | {_field[1, 0].Number} | {_field[2, 0].Number}|\n" +
-                          $"___________");
 
         }
 
-        public void AddSelected(Block block)
+        private void AddToSelected(Block block)
         {
-            SumSelectedBlocks += block.Number;
-            SelectedChanged?.Invoke();
-        }
-
-        public void RevertSelected(Block block)
-        {
-            SumSelectedBlocks -= block.Number;
-
-            if (SumSelectedBlocks < 0)
-                SumSelectedBlocks = 0;
+            if (block != null)
+                _selectedBlocks.Add(block);
 
             SelectedChanged?.Invoke();
         }
-
-        internal void ShowLog(int targetNumber)
+        public void ResetSelectedBlocks()
         {
-            Debug.Log($"target num = {targetNumber}");
-        }
-
-        public void RemoveSelected()
-        {
-            //foreach (var block in _field)
-            //{
-            //    if (block != null && block.Selected)
-            //    {
-            //        _pool.ReturnBlock(block);
-            //        ShiftBlocksUpperThan(block);
-            //        //_field[block.x, block.y] = null;
-            //    }
-            //}
-
-            for (int x = 0; x < _gridSize.x; x++)
+            foreach (var block in _selectedBlocks)
             {
-                for (int y = 0; y < _gridSize.y; y++)
-                {                  
-                    if (_field[x, y] != null && _field[x, y].Selected)
-                    {
-                        _pool.ReturnBlock(_field[x, y]);
-                        _field[x, y] = null;
-                        Debug.Log($"matrix after null but before ahifts=  \n" +
-                        $"___________\n" +
-                        $"|{_field[0, 3]?.Number} | {_field[1, 3]?.Number} | {_field[2, 3]?.Number}|\n" +
-                        $"___________\n" +
-                        $"|{_field[0, 2]?.Number} | {_field[1, 2]?.Number} | {_field[2, 2]?.Number}|\n" +
-                        $"___________\n" +
-                        $"|{_field[0, 1]?.Number} | {_field[1, 1]?.Number} | {_field[2, 1]?.Number}|\n" +
-                        $"___________\n" +
-                        $"|{_field[0, 0]?.Number} | {_field[1, 0]?.Number} | {_field[2, 0]?.Number}|\n" +
-                        $"___________");
-                        // ShiftColumnUpperThan(x, y);
-                    }
-                    //если поле == нулл, то сдвигаем все блоки выше текущего на 1 единицу
+                block.ResetBlock();
+            }
+            _selectedBlocks.Clear();
+        }
+        public void ResetPlayingField()
+        {          
 
-                    if (_field[x, y] == null && y < _gridSize.y)
-                    {
-                        if (y+1<_gridSize.y && _field[x, y + 1] != null)
-                        {
-                            _field[x, y + 1].Move();
-                            _field[x, y] = _field[x, y + 1];
-                            _field[x, y + 1] = null;
-                        }
-                    }
-
-                }
+            foreach (var block in _inGameBlocks)
+            {
+                
+                _pool.ReturnBlock(block);
+                block.Selected -= OnSelectedBlock;
+                block.Deselected -= OnDeselectedBlock;
             }
 
-            Debug.Log($"matrix after shifts= \n" +
-                        $"___________\n" +
-                        $"|{_field[0, 3]?.Number} | {_field[1, 3]?.Number} | {_field[2, 3]?.Number}|\n" +
-                        $"___________\n" +
-                        $"|{_field[0, 2]?.Number} | {_field[1, 2]?.Number} | {_field[2, 2]?.Number}|\n" +
-                        $"___________\n" +
-                        $"|{_field[0, 1]?.Number} | {_field[1, 1]?.Number} | {_field[2, 1]?.Number}|\n" +
-                        $"___________\n" +
-                        $"|{_field[0, 0]?.Number} | {_field[1, 0]?.Number} | {_field[2, 0]?.Number}|\n" +
-                        $"___________");
+            _inGameBlocks.Clear();
+            _positions.Clear();
 
         }
 
-        //private void ShiftColumnUpperThan(int xPos,int yPos)
-        //{
-        //    for (int y = yPos; y < _gridSize.y-1; y++)
-        //    {
-        //        _field[xPos, y] = _field[xPos, y + 1];
-
-        //        if (_field[xPos, y] != null)
-        //            _field[xPos, y].Move();
-
-        //        Debug.Log($"moved or not block {_field[xPos,y]}");
-        //    }
-        //}
-
-        private void ShiftBlocksUpperThan(Block deletedBlock)
+        public void DeleteSelectedBlocks()
         {
-            //_field[block.x, block.y] = _field[block.x, block.y + 1];
-            for (int y = deletedBlock.y; y < _gridSize.y; y++)
+            foreach (var block in _selectedBlocks)
             {
-                if (y + 1 < _gridSize.y)
-                {
-                    var shiftedBlock = _field[deletedBlock.x, y + 1];
-                    _field[deletedBlock.x, y] = shiftedBlock;
-                    shiftedBlock.Move();
-                }
-
+                if (_inGameBlocks.Contains(block))
+                _inGameBlocks.Remove(block);
+                                
+                _pool.ReturnBlock(block);
+                block.Selected -= OnSelectedBlock;
+                block.Deselected -= OnDeselectedBlock;
             }
+
+            ShiftBloks();
+
+            _selectedBlocks.Clear();
+
+           // AddNewBlocks();
+
+        }
+        private void ShiftBloks()
+        {
+
+            for (int i = 0; i < _selectedBlocks.Count; i++)
+            {
+                ShiftBloksUpperThan(_selectedBlocks[i]);
+                AddNewBlock(_selectedBlocks[i].x);
+            }
+
         }
 
-        public void Hide()
+        private void ShiftBloksUpperThan(Block block)
         {
-            foreach (var item in _field)
+         
+            for (int i = block.y+1; i < _gridSize.y; i++)
             {
-                if (item != null)
-                {
-                    item.Deselect();
-                    _pool.ReturnBlock(item);
-                }
+                _field[block.x, i].Move();
+                _field[block.x, i - 1] = _field[block.x, i];
+            }
+
+  
+
+        }
+
+        private void AddNewBlock(int coordX)
+        {           
+                 var block = _pool.GetBlock();
+                block.Initialize(this, _parent, _positions[new Vector2Int(coordX,_gridSize.y-1)], coordX, _gridSize.y-1);
+                _field[coordX, _gridSize.y-1] = block;
+                _inGameBlocks.Add(block);
+                block.Selected += OnSelectedBlock;
+                block.Deselected += OnDeselectedBlock;
+        }
+
+        private int CalculateSelectedBlocks()
+        {
+            int count = 0;
+            foreach (var block in _selectedBlocks)
+                count += block.Number;
+
+            return count;
+        }             
+        private void OnDeselectedBlock(Block block)
+        {
+            if (_selectedBlocks.Contains(block))
+            {
+                _selectedBlocks.Remove(block);
+                SelectedChanged?.Invoke();
             }
         }
-        public void DeselectAllBlocks()
+        private void OnSelectedBlock(Block block)
         {
-            foreach (var item in _field)
-            {
-                if (item != null)
-                {
-                    item.Deselect();
-                }
-            }
+            AddToSelected(block);        
         }
 
         private void GeneratePlayingField()
@@ -180,19 +156,19 @@ namespace Code
                 {
                     _bufferPosition = new Vector2(_bufferPosition.x, _bufferPosition.y + _sizeBlock);
                     var block = _pool.GetBlock();
-                    block.transform.SetParent(_parent);
-                    block.transform.position = _bufferPosition;
-                    block.gameObject.SetActive(true);
-                    block.Initialize(this);
-                    block.x = x;
-                    block.y = y;
+                    block.Initialize(this, _parent, _bufferPosition, x, y);
                     _field[x, y] = block;
+                    _inGameBlocks.Add(block);
+                    block.Selected += OnSelectedBlock;
+                    block.Deselected += OnDeselectedBlock;
+                    _positions.Add(new Vector2Int(x, y), _bufferPosition);
 
                 }
 
                 _bufferPosition = new Vector2(_bufferPosition.x + _sizeBlock, _startPosition.y);
             }
         }
+
 
 
         private void InitializeGrid()
@@ -207,6 +183,20 @@ namespace Code
 
         private bool GridIsZero() =>
             _gridSize.x <= 0 || _gridSize.y <= 0;
+
+        private void DebugMatrix3x4(string startMessage)
+        {
+            Debug.Log($"{startMessage} \n" +
+                        $"___________\n" +
+                        $"|{_field[0, 3]?.Number} | {_field[1, 3]?.Number} | {_field[2, 3]?.Number}|\n" +
+                        $"___________\n" +
+                        $"|{_field[0, 2]?.Number} | {_field[1, 2]?.Number} | {_field[2, 2]?.Number}|\n" +
+                        $"___________\n" +
+                        $"|{_field[0, 1]?.Number} | {_field[1, 1]?.Number} | {_field[2, 1]?.Number}|\n" +
+                        $"___________\n" +
+                        $"|{_field[0, 0]?.Number} | {_field[1, 0]?.Number} | {_field[2, 0]?.Number}|\n" +
+                        $"___________");
+        }
 
     }
 }
