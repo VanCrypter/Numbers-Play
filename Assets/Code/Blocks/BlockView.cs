@@ -17,5 +17,6 @@ namespace Code.Blocks
 
         public void SetSprite(Sprite sprite) => _colorSprite.sprite = sprite;
         public void SetColor(Color32 color) => _colorSprite.color = color;
+
     }
 }

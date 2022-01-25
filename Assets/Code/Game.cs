@@ -19,6 +19,7 @@ namespace Code
         [SerializeField, Range(5, 50)] private int _maxTargetNumber;
         [SerializeField] private int _targetNumber = 0;
         [SerializeField] private int _score;
+       
         public int TargetNumber
         {
             get { return _targetNumber; }
@@ -42,6 +43,7 @@ namespace Code
             _localTimer.TimerExpired += TimerWasExpired;
             _mainTimer.TimerExpired += MainTimerWasExpired;
             _playingField.SelectedChanged += OnSelectedChanged;
+         
         }
         public void StartGame()
         {
@@ -50,10 +52,8 @@ namespace Code
             _mainTimer.StartTimer();
             Score = 0;
             NextNumber();
-
         }
-
-
+      
 
         private void GameOver()
         {

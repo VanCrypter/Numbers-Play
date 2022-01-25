@@ -9,7 +9,7 @@ namespace Code.Blocks
 {
     public class Block : MonoBehaviour, IPointerClickHandler
     {
-        public int Number;/* { get; private set; }*/
+        public int Number;
         public int x, y;
         private BlockView _blockView;
         private PlayingField _playingField;
@@ -36,7 +36,8 @@ namespace Code.Blocks
             targetPosition = transform.localPosition;
             x = coordX;
             y = coordY;
-            Number = Random.Range(1, 5);            
+            Number = Random.Range(1, 5);
+            _blockView.SetSprite(_playingField.GetSpriteById(Number));
             _blockView.SetNumber(Number);
             _speedMove = 1f;
             transform.localScale = _normalSize;
@@ -55,7 +56,6 @@ namespace Code.Blocks
         private void Select()
         {
             _selected = true;
-            // _playingField.AddToSelected(this);
             transform.localScale = _selectedSize;
             Selected?.Invoke(this);
         }
@@ -63,7 +63,6 @@ namespace Code.Blocks
         private void Deselect()
         {
             _selected = false;
-            //_playingField.RemoveFromSelected(this);
             transform.localScale = _normalSize;
             Deselected?.Invoke(this);
         }

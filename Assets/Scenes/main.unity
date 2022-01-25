@@ -3092,8 +3092,7 @@ MonoBehaviour:
   _startPosition: {x: -1.5, y: -5}
   _pool: {fileID: 456441331}
   _parent: {fileID: 2029756955}
-  _selectedBlocks: []
-  _inGameBlocks: []
+  DataBlocks: {fileID: 11400000, guid: 10ca0dc13a7b2c54dbd9de25d29b2484, type: 2}
 --- !u!1 &2113103821
 GameObject:
   m_ObjectHideFlags: 0

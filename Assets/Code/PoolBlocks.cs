@@ -44,10 +44,7 @@ namespace Code
                 _capacity = 100;
 
             _pool = new Queue<Block>(_capacity);
-
             Addressables.LoadAssetAsync<GameObject>(_blockPrefab).Completed += LoadingComplete;
-            Debug.Log("Generate new Pool");
-
         }
 
         private void LoadingComplete(AsyncOperationHandle<GameObject> obj)
